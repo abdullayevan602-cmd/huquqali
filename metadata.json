@@ -1,0 +1,6 @@
+{
+  "name": "AI Lawyer Pro Uz - Legal Research",
+  "description": "Rasmiy huquqiy manbalar, sud amaliyoti, davlat xizmatlari va o'quv resurslariga qulay kirishni ta'minlovchi yurist ilovasi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
