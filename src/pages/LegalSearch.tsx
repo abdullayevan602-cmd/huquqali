@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { Search, ExternalLink, Filter, FileText } from "lucide-react";
+import { Search, Filter, FileText, Scale, BookOpen, GraduationCap, Newspaper } from "lucide-react";
 
 export function LegalSearch() {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-
-  // Mock results for demo, but always indicating external official source
   const [results, setResults] = useState<any[]>([]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -13,28 +11,41 @@ export function LegalSearch() {
     if (!query.trim()) return;
     
     setIsSearching(true);
-    // Simulate search delay
+    // Simulate global search across internal modules
     setTimeout(() => {
       setResults([
         {
           id: 1,
           title: "O'zbekiston Respublikasining Mehnat Kodeksi",
-          type: "Kodeks",
+          type: "Qonunlar",
           date: "2022-10-28",
-          status: "Amalda",
           summary: "Xodimlarning mehnat huquqlari va majburiyatlarini belgilovchi asosiy qonun hujjat.",
           source: "LexUZ",
-          url: "https://lex.uz/uz/"
+          icon: Scale,
+          color: "text-blue-600",
+          bg: "bg-blue-50"
         },
         {
           id: 2,
-          title: "Mehnat shartnomasi tuzish tartibi to'g'risida",
-          type: "Tushuntirish",
+          title: "Sud ishi: Aliment undirish",
+          type: "Sud amaliyoti",
+          date: "2023-05-12",
+          summary: "Fuqarolik ishlari bo'yicha sudning aliment miqdorini belgilash haqidagi qarori.",
+          source: "Court Practice",
+          icon: BookOpen,
+          color: "text-emerald-600",
+          bg: "bg-emerald-50"
+        },
+        {
+          id: 3,
+          title: "Mehnat shartnomasini bekor qilish asoslari",
+          type: "Darslar",
           date: "2023-01-15",
-          status: "Amalda",
-          summary: "Adliya vazirligi tomonidan mehnat shartnomasini rasmiylashtirish bo'yicha tushuntirish.",
-          source: "Adliya vazirligi",
-          url: "https://www.minjustice.uz/uz/"
+          summary: "Yurist Academy doirasida mehnat huquqi bo'yicha o'quv materiali.",
+          source: "Yurist Academy",
+          icon: GraduationCap,
+          color: "text-purple-600",
+          bg: "bg-purple-50"
         }
       ]);
       setIsSearching(false);
@@ -47,9 +58,9 @@ export function LegalSearch() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
             <Search className="h-6 w-6 text-indigo-600" />
-            Huquqiy Qidiruv
+            Global Huquqiy Qidiruv
           </h1>
-          <p className="mt-1 text-sm text-slate-500">Modda raqami, kalit so'z yoki hujjat nomi bo'yicha qidiring</p>
+          <p className="mt-1 text-sm text-slate-500">Barcha bo'limlar: Qonunlar, Sud amaliyoti, Darslar, Yangiliklar</p>
         </div>
       </div>
 
@@ -61,7 +72,7 @@ export function LegalSearch() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Masalan: aliment, mehnat shartnomasi, firibgarlik..."
+              placeholder="Masalan: aliment, mehnat shartnomasi, meros..."
               className="block w-full rounded-lg border-0 py-3 pl-10 pr-4 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
@@ -84,36 +95,36 @@ export function LegalSearch() {
 
       <div className="space-y-4">
         {results.map((result) => (
-          <div key={result.id} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex flex-col sm:flex-row gap-6">
+          <div key={result.id} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex flex-col sm:flex-row gap-6 hover:border-indigo-300 transition-colors cursor-pointer group">
+            <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg ${result.bg}`}>
+              <result.icon className={`h-6 w-6 ${result.color}`} />
+            </div>
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h3 className="text-lg font-semibold text-slate-900">{result.title}</h3>
-                <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                  {result.status}
-                </span>
-                <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
-                  {result.source === 'LexUZ' ? '🟢 Rasmiy manba' : '🟡 Tahliliy manba'}
+              <div className="flex items-center gap-3 mb-1">
+                <h3 className="text-lg font-semibold text-slate-900 group-hover:text-indigo-600">{result.title}</h3>
+                <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 ring-1 ring-inset ring-slate-500/10">
+                  {result.type}
                 </span>
               </div>
-              <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
-                <span className="flex items-center gap-1"><FileText className="h-4 w-4" /> {result.type}</span>
+              <div className="flex items-center gap-4 text-sm text-slate-500 mb-2">
+                <span>Manba: {result.source}</span>
+                <span>•</span>
                 <span>Sana: {result.date}</span>
               </div>
-              <p className="text-sm text-slate-600 mb-4">{result.summary}</p>
+              <p className="text-sm text-slate-600">{result.summary}</p>
             </div>
-            <div className="flex sm:flex-col justify-end gap-3 sm:border-l sm:border-slate-100 sm:pl-6">
-              <a 
-                href={result.url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-50 text-blue-700 px-4 py-2 text-sm font-semibold hover:bg-blue-100 transition-colors whitespace-nowrap"
-              >
-                {result.source}da ochish
-                <ExternalLink className="h-4 w-4" />
-              </a>
+            <div className="flex items-center sm:border-l sm:border-slate-100 sm:pl-6">
+              <button className="text-indigo-600 text-sm font-semibold hover:underline">
+                Batafsil ko'rish &rarr;
+              </button>
             </div>
           </div>
         ))}
+        {results.length === 0 && !isSearching && query && (
+          <div className="text-center py-12 text-slate-500">
+            Natija topilmadi. Boshqa so'z bilan qidirib ko'ring.
+          </div>
+        )}
       </div>
     </div>
   );

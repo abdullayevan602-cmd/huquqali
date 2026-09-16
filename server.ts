@@ -70,6 +70,39 @@ IMPORTANT RULES:
     }
   });
 
+  // AI Case Analyzer API
+  app.post("/api/analyze-case", async (req, res) => {
+    try {
+      const { caseText } = req.body;
+      const prompt = `AI Case Analyzer. 
+      Analyze the following legal case based on Uzbekistan law. 
+      Do NOT invent laws or court decisions. 
+      If you are unsure, state clearly that it requires checking official sources.
+      
+      Structure the analysis with these sections:
+      - Vaziyatni aniqlash
+      - Huquqiy masala
+      - Tegishli normalar
+      - Dalillar
+      - Qaror mantiqi
+      - O'xshash holatlar
+      
+      Case details:
+      ${caseText}
+      `;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-pro",
+        contents: prompt,
+      });
+
+      res.json({ response: response.text });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
